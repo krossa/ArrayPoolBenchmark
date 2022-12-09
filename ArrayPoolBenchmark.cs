@@ -4,13 +4,13 @@ using BenchmarkDotNet.Attributes;
 [MemoryDiagnoser]
 public class ArrayPoolBenchmark
 {
-    private int _arraySize = 1_000_000;
+    private int _collectionSize = 1_000_000;
 
     [Benchmark]
     public void StandardArray()
     {
-        var array = new int[_arraySize];
-        for (int i = 0; i < _arraySize; i++)
+        var array = new int[_collectionSize];
+        for (int i = 0; i < _collectionSize; i++)
             array[i] = i;
         
     }
@@ -19,8 +19,8 @@ public class ArrayPoolBenchmark
     public void SharedPoolWithoutClearingArray()
     {
         var sharedPool = ArrayPool<int>.Shared;
-        var array = sharedPool.Rent(_arraySize);
-        for (int i = 0; i < _arraySize; i++)
+        var array = sharedPool.Rent(_collectionSize);
+        for (int i = 0; i < _collectionSize; i++)
             array[i] = i;
         sharedPool.Return(array, false);
     }
@@ -29,28 +29,28 @@ public class ArrayPoolBenchmark
     public void SharedPoolWithClearingArray()
     {
         var sharedPool = ArrayPool<int>.Shared;
-        var array = sharedPool.Rent(_arraySize);
-        for (int i = 0; i < _arraySize; i++)
+        var array = sharedPool.Rent(_collectionSize);
+        for (int i = 0; i < _collectionSize; i++)
             array[i] = i;
         sharedPool.Return(array, true);
     }
 
     [Benchmark]
-    public void SpecificPoolWithoutCaching()
+    public void CustomPoolWithoutCaching()
     {
         var pool = ArrayPool<int>.Create();
-        var array = pool.Rent(_arraySize);
-        for (int i = 0; i < _arraySize; i++)
+        var array = pool.Rent(_collectionSize);
+        for (int i = 0; i < _collectionSize; i++)
             array[i] = i;
         pool.Return(array, false);
     }
 
     private ArrayPool<int> _cachedPool = ArrayPool<int>.Create();
     [Benchmark]
-    public void SpecificPoolWithCaching()
+    public void CustomPoolWithCaching()
     {
-        var array = _cachedPool.Rent(_arraySize);
-        for (int i = 0; i < _arraySize; i++)
+        var array = _cachedPool.Rent(_collectionSize);
+        for (int i = 0; i < _collectionSize; i++)
             array[i] = i;
         _cachedPool.Return(array, false);
     }
@@ -59,7 +59,7 @@ public class ArrayPoolBenchmark
     public void List()
     {
         var list = new List<int>();
-        for (int i = 0; i < _arraySize; i++)
+        for (int i = 0; i < _collectionSize; i++)
             list.Add(i);
     }
 }
