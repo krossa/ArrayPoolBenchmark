@@ -1,5 +1,5 @@
 # ArrayPoolBenchmark
 
-To lunch benchamrk you need to use Release configuration
+To lunch benchmark you need to use Release configuration
 
 dotnet run -c Release
