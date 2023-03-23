@@ -62,4 +62,12 @@ public class ArrayPoolBenchmark
         for (int i = 0; i < _collectionSize; i++)
             list.Add(i);
     }
+
+    [Benchmark]
+    public void ListWithSize()
+    {
+        var list = new List<int>(_collectionSize);
+        for (int i = 0; i < _collectionSize; i++)
+            list.Add(i);
+    }
 }
